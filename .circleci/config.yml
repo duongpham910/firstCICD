@@ -34,6 +34,17 @@ jobs:
           at: ~/
       - run: cat ~/output.txt
 
+
+  handle_fail:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: exit 1
+      - run:
+          name: on error
+          command: echo "Something went wrong!"
+          when: on_fail
+
 workflows:
   # Name the workflow "welcome"
   welcome:
@@ -44,3 +55,4 @@ workflows:
       - print_output_file:
           requires:
               - save_hello_world_output
+      - handle_fail
